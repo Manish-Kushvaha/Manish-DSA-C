@@ -1,0 +1,151 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct linked
+{
+    int data;
+    struct linked *left;
+    struct linked *right;
+} link;
+link *fun(int data)
+{
+    link *p = (link *)malloc(sizeof(link));
+    p->data = data;
+    p->left = NULL;
+    p->right = NULL;
+    return p;
+}
+// PRORDER TRAVERSAL
+void preOrder(link *root)
+{
+    if (root != NULL)
+    {
+        printf("%d ", root->data); // ROOT-LEFT-RIGHT
+        preOrder(root->left);
+        preOrder(root->right);
+    }
+}
+// POSTORDER TRAVERSAL
+void postOrder(link *root)
+{
+    if (root != NULL)
+    {
+        postOrder(root->left); // LEFT-RIGHT-ROOT
+        postOrder(root->right);
+        printf("%d ", root->data);
+    }
+}
+// INORDER TRAVERSAL
+void inOrder(link *root)
+{
+    if (root != NULL)
+    {
+        inOrder(root->left); // LEFT-ROOT-RIGHT
+        printf("%d ", root->data);
+        inOrder(root->right);
+    }
+}
+int isBST(link *p)
+{
+    static link *prev = NULL;
+    if (p != NULL)
+    {
+        if (!isBST(p->left))
+        {
+            return 0; // FOR NOT BST
+        }
+        if (prev != NULL && p->data <= prev->data)
+        {
+            return 0;
+        }
+        prev = p;
+        return isBST(p->right);
+    }
+    else
+    {
+        return 1; // FOR BST
+    }
+}
+link *search(link *p, int key) // when we have to return any pointer valuse that time we make it pointer type
+{
+    if (p == NULL)
+    {
+        return NULL;
+    }
+    if (p->data == key)
+    {
+        return p;
+    }
+    else if (p->data > key)
+    {
+        return search(p->left, key);
+    }
+    else
+    {
+        return search(p->right, key);
+    }
+}
+void insert(link *p, int key)
+{
+    link *prev = NULL;
+    while (p != NULL)
+    {
+        prev = p;
+        if (p->data == key)
+        {
+            printf("key exist %d",key);
+            return;
+        }
+        else if (key < p->data)
+        {
+            p = p->left;
+        }
+        else
+        {
+            p = p->right;
+        }
+    }
+        link *new = fun(key);
+        if (key < prev->data)
+        {
+            prev->left = new;
+        }
+        else
+        {
+            prev->right = new;
+        }
+    }
+
+
+int main()
+{
+    link *p0 = fun(5);
+    link *p1 = fun(3);
+    link *p2 = fun(6);
+    link *p3 = fun(1);
+    link *p4 = fun(4);
+    // link *p5 = fun(9);
+    // link *p6 = fun(11);
+    p0->left = p1;
+    p0->right = p2;
+    p1->left = p3;
+    p1->right = p4;
+    // p2->left = p5;
+    // p2->right = p6;
+
+    // preOrder(p0);
+    // postOrder(p0);
+    // inOrder(p0);
+    // printf("\n%d", isBST(p0));
+    // link *val = search(p0, 15);
+    // if (val != NULL)
+    // {
+    //     printf("\nelement %d is found", val->data);
+    // }
+    // else
+    // {
+    //     printf("\nelement is not found");
+    // }
+    insert(p0,7);
+    printf("%d",p0->right->right->data);
+    return 0;
+}

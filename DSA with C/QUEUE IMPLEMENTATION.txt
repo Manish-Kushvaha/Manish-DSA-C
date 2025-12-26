@@ -1,0 +1,248 @@
+/*****************QUEUE IMPLEMENTATION*******************
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct queue
+{
+    int size;
+    int f;
+    int r;
+    int *arr;
+};
+int EMPTY(struct queue *p)
+{
+    if (p->r == p->f)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+int FULL(struct queue *a)
+{
+    if (a->r == a->size - 1)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+void enqueue(struct queue *p, int val)
+{
+    if (FULL(p))
+    {
+        printf("stack is full");
+    }
+    else
+    {
+        p->r++;
+        p->arr[p->r] = val;
+        printf("ENQUIED ELEMENT IS %d\n",val);
+    }
+}
+int dequeue(struct queue *p)
+{
+    int a = -1;
+    if (EMPTY(p))
+    {
+        printf("stack is empty");
+    }
+    else
+    {
+        p->f++;
+        a = p->arr[p->f];
+    }
+    return a;
+}
+int main()
+{
+    struct queue p;
+    p.size = 5;
+    p.f = p.r = -1;
+    p.arr = (int *)malloc(p.size * sizeof(int));
+
+    enqueue(&p, 12);
+    enqueue(&p, 15);
+    enqueue(&p, 15);
+    enqueue(&p, 15);
+    enqueue(&p, 15);
+    printf("DEQUEUING ELEMENT %d\n", dequeue(&p));
+    printf("DEQUEUING ELEMENT %d\n", dequeue(&p));
+    printf("DEQUEUING ELEMENT %d\n", dequeue(&p));
+    printf("DEQUEUING ELEMENT %d\n", dequeue(&p));
+    printf("DEQUEUING ELEMENT %d\n", dequeue(&p));
+    printf("DEQUEUING ELEMENT %d\n", dequeue(&p));
+    // enqueue(&p, 20);
+    if (EMPTY(&p))
+    {
+        printf("\nSTACK IS EMPTY");
+    }
+    if (FULL(&p))
+    {
+        printf("\nSTACK IS FULL");
+    }
+    return 0;
+}
+
+
+//***************CIRCULAR QUEUE*********************
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct queue
+{
+    int size, f, r;
+    int *arr;
+} queue;
+int queue_empty(queue *p)
+{
+    if (p->f == p->r)
+    {
+        return 0;
+    }
+    else
+    {
+        return 0;
+    }
+}
+int queue_full(queue *p)
+{
+    if ((p->r + 1) % p->size == p->f)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+void enqueue(queue *p, int val)
+{
+    if (queue_full(p))
+    {
+        printf("queue is full\n");
+    }
+    else
+    {
+        p->r = (p->r + 1) % p->size;
+        p->arr[p->r] = val;
+        printf("ENQUEUED ELEMENT IS %d\n",val);
+    }
+}
+int dequeue(queue *p)
+{
+    int a = -1;
+    if (queue_empty(p))
+    {
+        printf("queue is empty\n");
+    }
+    else
+    {
+        p->f = (p->f + 1) % p->size;
+        a = p->arr[p->f];
+    }
+    return a;
+}
+int main()
+{
+    queue p;
+    p.size = 5;
+    p.f = p.r = 0;
+    p.arr = (int *)malloc(p.size * sizeof(int));
+    enqueue(&p, 1);
+    enqueue(&p, 2);
+    enqueue(&p, 3);
+    enqueue(&p, 4);
+    printf("DEQUEUED ELEMENT IS %d\n",dequeue(&p));
+    printf("DEQUEUED ELEMENT IS %d\n",dequeue(&p));
+    printf("DEQUEUED ELEMENT IS %d\n",dequeue(&p));
+    printf("DEQUEUED ELEMENT IS %d\n",dequeue(&p));
+    enqueue(&p, 4);
+
+    if (queue_empty(&p))
+    {
+        printf("CQUEUE IS EMPTY\n");
+    }
+    if (queue_full(&p))
+    {
+        printf("CQUEUE IS FULL\n");
+    }
+}
+
+
+// LINKED LIST QUEUE
+
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct queue
+{
+    int data;
+    struct queue *next;
+} lqueue;
+lqueue *f = NULL;
+lqueue *r = NULL;
+
+void taversal(lqueue *p)
+{
+    printf("printing element\n");
+    while (p != NULL)
+    {
+        printf("ELEMENT IS %d\n", p->data);
+        p = p->next;
+    }
+}
+void enqueue1(int val)
+{
+    lqueue *n = (lqueue *)malloc(sizeof(lqueue));
+    if (n == NULL)
+    {
+        printf("queue is full\n");
+    }
+    else
+    {
+        n->data = val;
+        n->next = NULL;
+
+        if (f == NULL)
+        {
+            f = r = n;
+        }
+        else
+        {
+            r->next = n;
+            r = n;
+        }
+    }
+}
+int dequeue1()
+{
+    lqueue *p = f;
+    int val = -1;
+    if (f == NULL)
+    {
+        printf("queue is empty\n");
+    }
+    else
+    {
+        f = f->next;
+        val = p->data;
+        free(p);
+    }
+    return val;
+}
+int main()
+{
+
+    taversal(f);
+    printf("DEQUEUING ELEMENT IS %d\n", dequeue1());
+    enqueue1(4);
+    enqueue1(5);
+    enqueue1(6);
+    enqueue1(0);
+    printf("DEQUEUING ELEMENT IS %d\n", dequeue1());
+    taversal(f);
+    return 0;
+}

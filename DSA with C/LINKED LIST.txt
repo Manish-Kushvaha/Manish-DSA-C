@@ -1,0 +1,212 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct node
+{
+    int data;
+    struct node *next;
+} LIST;
+
+void linked_traversal(LIST *ptr)
+{
+    while (ptr != NULL)
+    {
+        printf("ELEMENT IS %d \n", ptr->data);
+        ptr = ptr->next;
+    }
+}
+//******************insert_at_beinging******************
+LIST *insert_at_beinging(LIST *temp, int data)
+{
+    LIST *p = (LIST *)malloc(sizeof(LIST));
+    p->next = temp;
+    p->data = data;
+    return p;
+}
+//**************insert_at_end**************
+LIST *insert_at_end(LIST *temp, int data)
+{
+    LIST *ptr = (LIST *)malloc(sizeof(LIST));
+    ptr->data = data;
+    LIST *p = temp;
+    while (p->next != NULL)
+    {
+        p = p->next;
+    }
+    p->next = ptr;
+    ptr->next = NULL;
+    return temp;
+}
+//****************insert_at_index*******************
+LIST *insert_at_index(LIST *temp, int data, int index)
+{
+    LIST *ptr = (LIST *)malloc(sizeof(LIST));
+    ptr->data = data;
+    LIST *p = temp;
+    int i = 0;
+    while (i != index - 1)
+    {
+        p = p->next;
+        i++;
+    }
+    ptr->next = p->next;
+    p->next = ptr;
+    return temp;
+}
+
+int main()
+{
+    LIST *temp, *sec, *third;
+    temp = (LIST *)malloc(sizeof(LIST));
+    sec = (LIST *)malloc(sizeof(LIST));
+    third = (LIST *)malloc(sizeof(LIST));
+    temp->data = 4;
+    temp->next = sec;
+    sec->data = 8;
+    sec->next = third;
+    third->data = 9;
+    third->next = NULL;
+    linked_traversal(temp);
+    temp = insert_at_beinging(temp, 10);
+    linked_traversal(temp);
+    temp = insert_at_end(temp, 25);
+    linked_traversal(temp);
+    temp = insert_at_index(temp, 25, 2);
+    linked_traversal(temp);
+
+    return 0;
+}
+*****************************************************************************************************
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct node
+{
+    int data;
+    struct node *next;
+} DEL;
+void travel(DEL *p)
+{
+    while (p != NULL)
+    {
+        printf("%d ", p->data);
+        p = p->next;
+    }
+}
+//*****************DELETE FIRST**************
+DEL *dete_first_node(DEL *first)
+{
+    DEL *p = first;
+    first = first->next;
+    free(p);
+    return first;
+}
+//*****************DELETE IN BETWEEN**********
+DEL *dete_in_between(DEL *first, int index)
+{
+    DEL *p = first;
+    DEL *q = first->next;
+    int i = 0;
+    while (i < index - 1)
+    {
+        p = p->next;
+        q = q->next;
+        i++;
+    }
+    p->next = q->next;
+    free(q);
+    return first;
+}
+//**************DELETE LAST*************
+DEL *dete_at_last(DEL *first)
+{
+    DEL *p = first;
+    DEL *q = first->next;
+    while (q->next != NULL)
+    {
+        p = p->next;
+        q = q->next;
+    }
+    p->next = NULL;
+    free(q);
+    return first;
+}
+
+int main()
+{
+    DEL *first, *sec, *third;
+
+    first = (DEL *)malloc(sizeof(DEL));
+    sec = (DEL *)malloc(sizeof(DEL));
+    third = (DEL *)malloc(sizeof(DEL));
+
+    first->data = 1;
+    first->next = sec;
+    sec->data = 2;
+    sec->next = third;
+    third->data = 3;
+    third->next = NULL;
+    printf("LINKED LIST\n");
+    travel(first);
+    first = dete_first_node(first);
+    printf("\nAFTER DELETING NODE\n");
+    first = dete_in_between(first, 1);
+    first = dete_at_last(first);
+    travel(first);
+
+    return 0;
+}
+//**************CIRCULAR LINKED LIST****************
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct node
+{
+    int data;
+    struct node *next;
+} DEL;
+void travel(DEL *first)
+{
+    DEL *p=first;
+    do
+    {
+    printf("ELEMENT IS %d \n",p->data);
+        p = p->next;
+    }
+    while(p!=first);
+}
+DEL *insert_at_first(DEL *first, int data)
+{
+    DEL *ptr = (DEL *)malloc(sizeof(DEL));
+    ptr->data=data;
+    DEL *q = first->next;
+    while (q->next != first)
+    {
+        q = q->next;
+    }
+    q->next = ptr;
+    ptr->next = first;
+    first=ptr;
+    return first;
+}
+
+int main()
+{
+    DEL *first, *sec, *third;
+
+    first = (DEL *)malloc(sizeof(DEL));
+    sec = (DEL *)malloc(sizeof(DEL));
+    third = (DEL *)malloc(sizeof(DEL));
+
+    first->data = 1;
+    first->next = sec;
+    sec->data = 2;
+    sec->next = third;
+    third->data = 3;
+    third->next = first;
+    printf("\nLINKED LIST \n");
+    travel(first);
+    printf("\nNEW LINKED LIST \n");
+    first = insert_at_first(first, 5);
+    travel(first);
+
+    return 0;
+}
+

@@ -1,0 +1,205 @@
+//STACK OPERATION IN ARRAY
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct stack
+{
+    int size;
+    int top;
+    int *arr;
+} stack;
+int isempty(stack *ptr)
+{
+    if (ptr->top == -1)
+    {
+        // printf("STACK IS EMPTY ");
+        return 1;
+    }
+    else
+    {
+        // return printf("STACK IS NOT EMPTY");
+        return 0;
+    }
+}
+int isfull(stack *ptr)
+{
+    if (ptr->top == ptr->size - 1)
+    {
+        // printf("\nSTACK IS FULL\n");
+        return 1;
+    }
+    else
+    {
+        // return printf("STACK IS NOT FULL\n");
+        return 0;
+    }
+}
+//************PUSH**************
+void push(stack *ptr, int num)
+{
+    if (isfull(ptr))
+    {
+        printf("\nSTACK IS OVERFLOW");
+    }
+    else
+    {
+        ptr->top++;
+        ptr->arr[ptr->top] = num;
+    }
+}
+//*************POP**************
+int pop(stack *ptr)
+{
+    if (isempty(ptr))
+    {
+        printf("\nSTACK IS EPMTY");
+        return -1;
+    }
+    else
+    {
+        int val = ptr->arr[ptr->top];
+        ptr->top--;
+        return val;
+    }
+}
+//*************PEEK***************
+int peak(stack *ptr, int i)
+{
+    if (ptr->top - i + 1 < 0)
+    {
+        printf("INVALID INDEX");
+        return 0;
+    }
+    else
+    {
+        return ptr->arr[ptr->top - i + 1];
+    }
+}
+int main()
+{
+    stack *p = (stack *)malloc(sizeof(stack));
+    p->size = 4;
+    p->top = -1;
+    p->arr = (int *)malloc(p->size * sizeof(int));
+    printf("BEFORE PUSHING,full %d\n", isfull(p));
+    printf("BEFORE PUSHING,empty %d\n", isempty(p));
+    push(p, 5);
+    push(p, 6);
+    push(p, 7);
+    push(p, 8);
+    printf("after PUSHING,full %d\n", isfull(p));
+    printf("after PUSHING,empty %d\n", isempty(p));
+    printf("POPED %d FROM THE STACK\n", pop(p));
+    printf("POPED %d FROM THE STACK\n", pop(p));
+    printf("POPED %d FROM THE STACK\n", pop(p));
+    printf("POPED %d FROM THE STACK\n", pop(p));
+
+    printf("after POPED,full %d\n", isfull(p));
+    printf("after POPED,empty %d\n", isempty(p));
+    for (int j = 1; j <= p->top + 1; j++)
+    {
+        printf("THE POITION %d AT VALUE IS %d\n",j,peak(p,j));
+    }
+      printf("\nCHECK IT %d",peak(p,6));
+    return 0;
+}
+
+// STACK USING LINKEDLIST
+
+typedef struct snode
+{
+    int data;
+    struct snode *next;
+} stack;
+
+void traversal(stack *p)
+{
+    while (p != NULL)
+    {
+        printf("ELEMENT IS %d\n", p->data);
+        p = p->next;
+    }
+}
+int isempty(stack *p)
+{
+    if (p == NULL)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+int isfull(stack *p)
+{
+    stack *q = (stack *)malloc(sizeof(stack));
+    if (q == NULL)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+stack *push(stack *p, int v)
+{
+    if (isfull(p))
+    {
+        printf("STACK IS OVERFLOW\n");
+    }
+    else
+    {
+        stack *newval = (stack *)malloc(sizeof(stack));
+        newval->data = v;
+        newval->next = p;
+        p = newval;
+        return newval;
+    }
+}
+int pop(stack **p)
+{
+    if (isempty(p))
+    {
+        printf("stack is underflow");
+    }
+    else
+    {
+        stack *q = *p;
+        *p = (*p)->next;
+        int val = q->data;
+        free(p);
+        return val;
+    }
+}
+int peek(stack *first,int pos)
+{
+    stack *ptr = first;
+    for (int i = 0; (i < pos - 1 && ptr != NULL); i++)
+    {
+        ptr = ptr->next;
+    }
+    if (ptr != NULL)
+    {
+        return ptr->data;
+    }
+    else
+    {
+        return -1;
+    }
+}
+int main()
+{
+    stack *first = NULL;
+    first = push(first, 1);
+    printf("element %d is pushed\n", first->data);
+    first = push(first, 2);
+    printf("element %d is pushed\n", first->data);
+    first = push(first, 3);
+    printf("element %d is pushed\n", first->data);
+    traversal(first);
+    int element = pop(&first);
+    printf("ELEMENT %d IS POPED\n", element);
+    traversal(first);
+    printf("ELEMENT %d POSITION IS 1",peek(first,1));
+}

@@ -1,0 +1,303 @@
+// **************BUBBLE SORT***********
+#include<stdio.h>
+void traversal(int arr[],int size){
+    for(int i=0;i<size;i++){
+        printf("ELEMENT IS %d\n",arr[i]);
+    }
+}
+int bubble_sort(int arr[],int size){
+    int temp;int sorted=0;//FOR MAKING IT ADAPTIVE
+    for(int i=0;i<size-1;i++){//FOR NUMBER OF PASS
+    printf("SORTING TIME:%d\n",i+1);
+     sorted=1;
+        for(int j=0;j<size-1-i;j++){//FOR COMPARISION OF EACH PASS
+            if(arr[j]>arr[j+1]){
+           temp=arr[j];
+           arr[j]=arr[j+1];
+           arr[j+1]=temp;
+           sorted=0;
+            }
+        }
+        if(sorted){
+            return;
+        }
+    }
+}
+int main(){
+    int arr[]={4,5,1,6,1,9,2,3};
+    int size=sizeof(arr)/sizeof(int);
+    traversal(arr,size);
+    bubble_sort(arr,size);
+    printf("AFTER SORTING \n");
+    traversal(arr,size);
+    return 0;
+}
+
+//****************INSERTION SORT********************
+#include <stdio.h>
+void traversal(int arr[], int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+}
+int K;
+void insertion_sort(int arr[], int size)
+{
+    int key, j;
+    for (int i = 1; i <= size - 1; i++)
+    {
+        K++;
+        key = arr[i];
+        j = i - 1;
+        while (j >= 0 && arr[j] > key)
+        {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+int main()
+{
+    int arr[] = {12, 5, 9, 18, 1, 5};
+    int size = sizeof(arr) / sizeof(int);
+    traversal(arr, size);
+    insertion_sort(arr, size);
+    printf("\nNUMBER OF TIME RUN:%d\n", K);
+    printf("\nAFTER SORTING\n");
+    traversal(arr, size);
+}
+
+//*******************SELECTION SORT*******************
+#include<stdio.h>
+void traversal(int arr[],int size){
+    for(int i=0;i<size;i++){
+        printf("%d ",arr[i]);
+    }
+}
+void selection_sort(int arr[],int size){
+    int index,temp;
+    for(int i=0;i<size-1;i++){
+        index=i;
+        for(int j=i+1;j<size;j++){
+            if(arr[j]<arr[index]){
+                index=j;
+            }
+        }
+        temp=arr[i];
+        arr[i]=arr[index];
+        arr[index]=temp;
+    }
+}
+int main(){
+    int arr[]={4,1,8,9,5};
+    int size=sizeof(arr)/sizeof(int);
+    traversal(arr,size);
+    selection_sort(arr,size);
+    printf("\nAFTER SORTING\n");
+    traversal(arr,size);
+    return 0;
+}
+
+//*********************QUICKSORT METHOD*******************
+#include <stdio.h>
+#include <stdlib.h>
+
+void traversal(int arr[], int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+}
+int partion(int arr[], int low, int high)
+{
+    int i, j, temp;
+    int pivot = arr[low];
+    i = low + 1;
+    j = high;
+
+    do
+    {
+        while (arr[i] <= pivot)
+        {
+            i++;
+        }
+        while (arr[j] > pivot)
+        {
+            j--;
+        }
+        if (i < j)
+        {
+            temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    } while (i < j);
+
+    temp = arr[low];
+    arr[low] = arr[j];
+    arr[j] = temp;
+
+    return j;
+}
+void quick(int arr[], int low, int high)
+{
+    int pindex;
+    if (low < high){
+        pindex = partion(arr, low, high);
+    quick(arr, low, pindex - 1);
+    quick(arr, pindex + 1, high);
+ }
+}
+int main()
+{
+    int arr[] = {5, 2, 8, 4, 1};
+    int size = sizeof(arr) / sizeof(int);
+    int n=5;
+    traversal(arr, size);
+    printf("\nafter sorting\n");
+    quick(arr, 0, n - 1);
+    traversal(arr, size);
+
+    return 0;
+ }
+
+//********************MERGESORT******************
+#include <stdio.h>
+#include <stdlib.h>
+
+void traversal(int arr[], int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+}
+void merge(int arr[], int low, int mid, int high)
+{
+    int i, j, k;    int b[100];
+    i = low;
+    j = mid + 1;
+    k = low;
+
+    while (i <= mid && j <= high)
+    {
+        if (arr[i] < arr[j])
+        {
+            b[k] = arr[i];
+            i++; k++;
+        }
+        else
+        {
+            b[k] = arr[j];
+            j++;
+            k++;
+        }
+    }
+    while (i <= mid)
+    {
+        b[k] = arr[i];
+        k++;
+        i++;
+    }
+    while (j <= high)
+    {
+        b[k] = arr[j];
+        k++;
+        j++;
+    }
+
+    for (int i = 0; i <= high; i++)
+    {
+        arr[i] = b[i];
+    }
+}
+void mergeSort(int arr[], int low, int high)
+{
+    int mid;
+    if (low < high)
+    {
+        mid = (low + high) / 2;
+        mergeSort(arr, low, mid);
+        mergeSort(arr, mid + 1, high);
+        merge(arr, low, mid, high);
+    }
+}
+
+int main()
+{
+    int arr[] = {5, 6, 4, 8, 5, 6};
+    int size = sizeof(arr) / sizeof(int);
+    traversal(arr, size);
+    mergeSort(arr, 0, 5);
+    printf("\nafter sorting\n");
+    traversal(arr, size);
+
+    return 0;
+}
+//***************COUNT SORT******************
+#include <stdio.h>
+#include <limits.h>
+#include <stdlib.h>
+void traversal(int arr[], int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+}
+int minimum(int arr[], int size)
+{
+    int max = INT_MIN;
+    for (int i = 0; i < size; i++)
+    {
+        if (max < arr[i])
+        {
+            max = arr[i];
+        }
+    }
+    return max;
+}
+void countSort(int arr[], int size)
+{
+    int max = minimum(arr, size);
+    int *count = (int *)malloc(max + 1 * sizeof(int));
+    int i, j;
+    for (int i = 0; i < max + 1; i++)
+    {
+        count[i] = 0;
+    }
+    for (int i = 0; i < size; i++)
+    {
+        count[arr[i]] = count[arr[i]] + 1;
+    }
+    i = j = 0;
+    while (i <= max)
+    {
+        if (count[i] > 0)
+        {
+            arr[j] = i;
+            count[i] = count[i] - 1;
+            j++;
+        }
+        else
+        {
+            i++;
+        }
+    }
+}
+int main()
+{
+    int arr[] = {455, 499, 1, 5, 100};
+    printf("array is\n");
+    int size = sizeof(arr) / sizeof(int);
+    traversal(arr, size);
+    countSort(arr, size);
+    printf("\nsorted array is\n");
+    traversal(arr, size);
+
+    return 0;
+}
